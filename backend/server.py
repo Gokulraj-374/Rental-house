@@ -338,7 +338,7 @@ async def get_properties(
         amenity_list = [a.strip() for a in amenities.split(",")]
         query["amenities"] = {"$in": amenity_list}
     
-    properties = await db.properties.find(query, {"_id": 0}).to_list(1000)
+    properties = await db.properties.find(query, {"_id": 0}).limit(100).to_list(100)
     return properties
 
 @api_router.get("/properties/{property_id}", response_model=Property)
@@ -355,7 +355,7 @@ async def get_recommendations(
     preferred_amenities: Optional[str] = None,
     current_user: dict = Depends(get_current_user)
 ):
-    properties = await db.properties.find({}, {"_id": 0}).to_list(1000)
+    properties = await db.properties.find({}, {"_id": 0}).limit(50).to_list(50)
     
     if not properties:
         return []
@@ -440,13 +440,13 @@ async def add_favorite(favorite_data: FavoriteCreate, current_user: dict = Depen
 
 @api_router.get("/favorites", response_model=List[Property])
 async def get_favorites(current_user: dict = Depends(get_current_user)):
-    favorites = await db.favorites.find({"user_id": current_user["id"]}, {"_id": 0}).to_list(1000)
+    favorites = await db.favorites.find({"user_id": current_user["id"]}, {"_id": 0}).limit(50).to_list(50)
     
     if not favorites:
         return []
     
     property_ids = [f["property_id"] for f in favorites]
-    properties = await db.properties.find({"id": {"$in": property_ids}}, {"_id": 0}).to_list(1000)
+    properties = await db.properties.find({"id": {"$in": property_ids}}, {"_id": 0}).to_list(50)
     
     return properties
 
@@ -484,7 +484,7 @@ async def get_search_history(current_user: dict = Depends(get_current_user)):
         return []
     
     property_ids = [h["property_id"] for h in history]
-    properties = await db.properties.find({"id": {"$in": property_ids}}, {"_id": 0}).to_list(1000)
+    properties = await db.properties.find({"id": {"$in": property_ids}}, {"_id": 0}).limit(10).to_list(10)
     
     # Maintain order
     property_map = {p["id"]: p for p in properties}
@@ -503,7 +503,7 @@ async def get_nearby_properties(current_user: dict = Depends(get_current_user)):
     user_lat = user_location.get("lat", 0)
     user_lng = user_location.get("lng", 0)
     
-    all_properties = await db.properties.find({}, {"_id": 0}).to_list(1000)
+    all_properties = await db.properties.find({}, {"_id": 0}).limit(50).to_list(50)
     
     # Calculate distances
     properties_with_distance = []
