@@ -1,0 +1,131 @@
+{
+  "theme": "Light/Dark toggle required. Default: Light. Smart detection based on system preferences.",
+  "typography": {
+    "headings": {
+      "family": "Outfit",
+      "weights": ["300", "500", "700"],
+      "classes": "font-sans tracking-tight text-slate-900 dark:text-white",
+      "usage": "Property titles, AI scores, dashboard section headers. Prohibited: Inter."
+    },
+    "body": {
+      "family": "DM Sans",
+      "weights": ["400", "500"],
+      "classes": "font-sans leading-relaxed text-slate-600 dark:text-slate-300",
+      "usage": "Property descriptions, distances, amenities, general UI text."
+    },
+    "mono": {
+      "family": "JetBrains Mono",
+      "classes": "font-mono tracking-tight",
+      "usage": "Use for price tags, AI match percentage numbers, and travel time data to give a technical 'computed' feel."
+    }
+  },
+  "colors": {
+    "light": {
+      "background": "#F8FAFC",
+      "surface": "#FFFFFF",
+      "primary": "#0F766E",
+      "primary_hover": "#0D5C75",
+      "accent": "#0369A1",
+      "ai_highlight": "#10B981",
+      "text_primary": "#0F172A",
+      "text_muted": "#64748B",
+      "border": "#E2E8F0"
+    },
+    "dark": {
+      "background": "#020617",
+      "surface": "#0F172A",
+      "primary": "#2DD4BF",
+      "primary_hover": "#14B8A6",
+      "accent": "#38BDF8",
+      "ai_highlight": "#34D399",
+      "text_primary": "#F8FAFC",
+      "text_muted": "#94A3B8",
+      "border": "#1E293B"
+    }
+  },
+  "visual_enhancers": {
+    "cards": "Subtle border (1px border-border), rounded-2xl, no drop shadow by default. On hover: -translate-y-1, shadow-lg, border-primary/30.",
+    "glassmorphism": "For sticky map overlays, floating property summaries, and top nav: bg-white/70 dark:bg-slate-900/70, backdrop-blur-xl, backdrop-saturate-150, 1px bottom/inner border border-white/20. NEVER use completely transparent backgrounds.",
+    "ai_elements": "For top AI recommended properties, use the 'Tracing Beam' effect or a subtle shimmering emerald gradient border to distinguish from normal listings.",
+    "price_prediction": "Show AI predicted rent as a soft 'Expected: ₹X' badge next to the actual price. If actual price is lower than predicted, highlight the difference in green (e.g., 'Great Deal!').",
+    "map_pins": "Custom SVG markers using primary teal color. Selected property pin should have an absolute positioned div with animate-ping for a radar effect."
+  },
+  "layouts": {
+    "dashboard_grid": "Bento Grid Mode B. grid-cols-1 md:grid-cols-4 lg:grid-cols-12 gap-6. Dashboard should utilize dense widget style for AI stats and recently viewed.",
+    "search_view": "Split Screen Layout. Left side: scrollable property list (col-span-12 lg:col-span-5). Right side: sticky Map view (hidden on mobile, lg:col-span-7) taking up h-[calc(100vh-80px)].",
+    "spacing": "Generous. Use p-6 or p-8 inside property cards. Use gap-8 for feature sections."
+  },
+  "components": {
+    "shadcn_customizations": "Remove standard 'Vercel' look. Use rounded-2xl for Dialogs and Cards. Buttons should be pill-shaped (rounded-full).",
+    "forms": "Use Shadcn forms. Inputs should have bg-slate-50 dark:bg-slate-900 with subtle border focus-within:ring-primary.",
+    "badges": "For Amenities (WiFi, AC, etc.): rounded-full, px-3 py-1, text-sm, bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300."
+  },
+  "motion": {
+    "page_transitions": "Framer motion fade and slight slide-up (y: 10, opacity: 0 -> y: 0, opacity: 1).",
+    "list_stagger": "Property cards should stagger in using Framer Motion (staggerChildren: 0.1).",
+    "interactions": "All buttons MUST have hover:scale-[1.02] active:scale-[0.98] transition-transform."
+  },
+  "media": {
+    "images": {
+      "hero_backgrounds": [
+        {
+          "url": "https://images.pexels.com/photos/17174767/pexels-photo-17174767.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+          "description": "Contemporary white and wooden villa exterior shot at daytime with elegant design."
+        }
+      ],
+      "property_exteriors": [
+        {
+          "url": "https://images.unsplash.com/photo-1627141234469-24711efb373c?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxNzV8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBob3VzZSUyMGV4dGVyaW9yJTIwYXJjaGl0ZWN0dXJlfGVufDB8fHx8MTc3NDQ1MjYwMHww&ixlib=rb-4.1.0&q=85",
+          "description": "blue and white concrete building"
+        }
+      ],
+      "property_interiors": [
+        {
+          "url": "https://images.pexels.com/photos/7511701/pexels-photo-7511701.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+          "description": "Bright living room interior with modern furnishings and cozy atmosphere, featuring a gray sofa and indoor plants."
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1772475329856-7c7de908b44e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODF8MHwxfHNlYXJjaHw0fHxtb2Rlcm4lMjBhcGFydG1lbnQlMjBsaXZpbmclMjByb29tJTIwY296eXxlbnwwfHx8fDE3NzQ0NTI2MDF8MA&ixlib=rb-4.1.0&q=85",
+          "description": "Modern living room with large sectional sofa and tv."
+        }
+      ]
+    },
+    "icons": "Use @phosphor-icons/react for Duotone weights, giving a high-end app feel."
+  },
+  "accessibility": {
+    "contrast": "Ensure minimum 4.5:1 ratio for text. Teal primary buttons must use white text, not dark text.",
+    "testing": "All interactive and key informational elements MUST include a data-testid attribute in kebab-case (e.g., data-testid='property-card-123', data-testid='map-view-toggle').",
+    "focus": "focus:ring-2 focus:ring-primary/50 focus:outline-none on all inputs and buttons."
+  },
+  "3d_and_map_libraries": {
+    "map": "Use 'react-leaflet' and 'leaflet'. Render maps with OpenStreetMap tiles. CRITICAL: Use map styling options (like CartoDB Positron URL) to make the map look premium and muted, rather than default raw OSM styling.",
+    "animations": "Use 'framer-motion' for 2D layout animations and page transitions."
+  },
+  "instructions_to_main_agent": [
+    "Strictly use .js or .jsx extensions for React components. Do NOT use .tsx.",
+    "Run 'yarn add @phosphor-icons/react react-leaflet leaflet framer-motion i18next react-i18next'.",
+    "For multi-language support (English/Tamil), use 'i18next' and 'react-i18next'. Provide a sleek language toggle switch in the navbar.",
+    "Emphasize the 'AI Recommendation' score using JetBrains Mono font and Emerald/Teal colors to build trust.",
+    "Travel Time Calculator: Visually pair distance (km) and time (mins) with car/walk icons in a small highlighted pill/badge on the property card.",
+    "Prioritize optical alignment over geometric. Use generous spacing (p-6, p-8) inside cards to prevent a cramped feel.",
+    "Implement Sonner toasts for the 'Alerts' system (new house added, price drops)."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "You tend to converge toward generic, 'on distribution' outputs. Avoid this: make creative, distinctive frontends that surprise and delight.",
+    "Dark colors look good when used independently without gradients. DO NOT use dark colors as gradients.",
+    "Don't make generic centered layouts, simplistic gradients, and uniform styling.",
+    "Create depth through layered design elements with z-index hierarchy.",
+    "Use glass-morphism effects with backdrop filters (12-24px blur).",
+    "You MUST NOT apply universal transition. Eg: transition: all. This results in breaking transforms. Always add transitions for specific interactive elements like button, input excluding transforms.",
+    "You MUST NOT center align the app container, ie do not add .App { text-align: center; } in the css file. This disrupts the human natural reading flow of text.",
+    "Always use modern button styles like pill-shaped, or sharp button with interaction animations & color relevant to the app style.",
+    "NEVER: use AI assistant Emoji characters like 🤖🧠💭💡🔮🎯📚🎭🎬🎪🎉🎊🎁🎀🎂🍰🎈🎨🎰💰💵💳🏦💎🪙💸🤑📊📈📉💹🔢🏆🥇 etc for icons.",
+    "Every interaction needs micro-animations - hover states, transitions, parallax effects, and entrance animations. Static = dead.",
+    "Use 2-3x more spacing than feels comfortable. Cramped designs look cheap.",
+    "Subtle grain textures, noise overlays, custom cursors, selection states, and loading animations: separates good from extraordinary.",
+    "Components MUST use named exports (export const ComponentName = ...)",
+    "Pages MUST use default exports (export default function PageName() {...})",
+    "Use `sonner` for toasts. Sonner component are located in /app/frontend/src/components/ui/sonner.js",
+    "All interactive and key informational elements MUST include a `data-testid` attribute to facilitate robust automated testing."
+  ]
+}
