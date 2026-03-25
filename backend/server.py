@@ -366,7 +366,7 @@ async def get_recommendations(
     
     # Calculate scores for each property
     scored_properties = []
-    user_location = current_user.get("workplace_location", {})
+    user_location = current_user.get("workplace_location") or {}
     user_lat = user_location.get("lat", 13.0827)  # Default to Chennai
     user_lng = user_location.get("lng", 80.2707)
     
@@ -494,8 +494,8 @@ async def get_search_history(current_user: dict = Depends(get_current_user)):
 
 @api_router.get("/nearby-properties", response_model=List[Property])
 async def get_nearby_properties(current_user: dict = Depends(get_current_user)):
-    user_location = current_user.get("workplace_location", {})
-    if not user_location:
+    user_location = current_user.get("workplace_location") or {}
+    if not user_location or not user_location.get("lat"):
         # Return random properties
         properties = await db.properties.find({}, {"_id": 0}).limit(10).to_list(10)
         return properties
