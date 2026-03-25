@@ -10,15 +10,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 export const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-
-  const toggleLanguage = () => {
-    const newLang = i18n.language === 'en' ? 'ta' : 'en';
-    i18n.changeLanguage(newLang);
-  };
 
   const handleLogout = () => {
     logout();
@@ -87,17 +82,6 @@ export const Navbar = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-3">
-            {/* Language Toggle */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={toggleLanguage}
-              className="hidden sm:flex rounded-full"
-              data-testid="language-toggle"
-            >
-              <span className="text-sm font-mono">{i18n.language === 'en' ? 'த' : 'EN'}</span>
-            </Button>
-
             {/* Theme Toggle */}
             <Button
               variant="ghost"
@@ -209,14 +193,6 @@ export const Navbar = () => {
                   </button>
                 </>
               )}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={toggleLanguage}
-                className="w-full justify-start rounded-full"
-              >
-                Switch to {i18n.language === 'en' ? 'தமிழ்' : 'English'}
-              </Button>
             </div>
           </motion.div>
         )}
