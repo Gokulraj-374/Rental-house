@@ -31,7 +31,7 @@ export const FilterPanel = ({ filters, onFilterChange, onReset }) => {
   };
 
   const handleBHKChange = (bhk) => {
-    onFilterChange({ ...filters, bhk });
+    onFilterChange({ ...filters, bhk: bhk === 'all' ? '' : bhk });
   };
 
   const handleAmenityToggle = (amenity) => {
@@ -99,12 +99,12 @@ export const FilterPanel = ({ filters, onFilterChange, onReset }) => {
       {/* BHK Type */}
       <div className="space-y-2">
         <Label>{t('filter.bhk_type')}</Label>
-        <Select value={filters.bhk || ''} onValueChange={handleBHKChange}>
+        <Select value={filters.bhk || 'all'} onValueChange={handleBHKChange}>
           <SelectTrigger className="rounded-full" data-testid="bhk-filter-select">
             <SelectValue placeholder="Select BHK" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All</SelectItem>
+            <SelectItem value="all">All</SelectItem>
             {BHK_OPTIONS.map(bhk => (
               <SelectItem key={bhk} value={bhk}>{bhk}</SelectItem>
             ))}
