@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { PropertyCard } from '@/components/PropertyCard';
@@ -28,18 +28,7 @@ export default function BrowsePage() {
     amenities: []
   });
 
-  useEffect(() => {
-    fetchProperties();
-    if (isAuthenticated) {
-      fetchFavorites();
-    }
-  }, [isAuthenticated]);
-
-  useEffect(() => {
-    applyFilters();
-  }, [filters, properties]);
-
-  const fetchProperties = async () => {
+  const fetchProperties = useCallback(async () => {
     setLoading(true);
     try {
       const data = await api.getProperties();
@@ -50,18 +39,18 @@ export default function BrowsePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchFavorites = async () => {
+  const fetchFavorites = useCallback(async () => {
     try {
       const data = await api.getFavorites();
       setFavorites(data.map(p => p.id));
     } catch (error) {
       console.error('Error fetching favorites:', error);
     }
-  };
+  }, []);
 
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...properties];
 
     if (filters.city) {
@@ -87,7 +76,18 @@ export default function BrowsePage() {
     }
 
     setFilteredProperties(filtered);
-  };
+  }, [properties, filters]);
+
+  useEffect(() => {
+    fetchProperties();
+    if (isAuthenticated) {
+      fetchFavorites();
+    }
+  }, [isAuthenticated, fetchProperties, fetchFavorites]);
+
+  useEffect(() => {
+    applyFilters();
+  }, [applyFilters]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);

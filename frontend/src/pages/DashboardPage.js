@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { PropertyCard } from '@/components/PropertyCard';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Sparkles, MapPin, Clock, TrendingUp } from 'lucide-react';
+import { Sparkles, MapPin, Clock } from 'lucide-react';
 import api from '@/utils/api';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -20,11 +20,7 @@ export default function DashboardPage() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
+  const fetchDashboardData = useCallback(async () => {
     setLoading(true);
     try {
       const [recommendedData, nearbyData, recentData, favoritesData] = await Promise.all([
@@ -44,7 +40,11 @@ export default function DashboardPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, [fetchDashboardData]);
 
   const handleFavorite = async (propertyId) => {
     try {
@@ -113,12 +113,12 @@ export default function DashboardPage() {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          {stats.map((stat, idx) => (
+          {stats.map((stat) => (
             <motion.div
-              key={idx}
+              key={stat.label}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
+              transition={{ delay: stats.indexOf(stat) * 0.1 }}
             >
               <Card className="p-6 rounded-2xl border-2 hover:border-primary/30 transition-colors">
                 <div className="flex items-center gap-4">

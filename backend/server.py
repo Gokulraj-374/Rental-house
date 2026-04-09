@@ -267,7 +267,8 @@ def calculate_ai_score(property_price: float, user_budget: float, distance_km: f
     else:
         price_match = 0.5
     
-    # Distance score (30%)
+    # Distance score (30%) - Initialize with default
+    distance_score = 0.0
     if distance_km <= 2:
         distance_score = 1.0
     elif distance_km <= 5:
@@ -409,6 +410,37 @@ async def create_property(property_data: PropertyCreate, current_user: dict = De
     
     return property_obj
 
+def build_property_query(city: Optional[str], min_price: Optional[float], max_price: Optional[float],
+                         bhk: Optional[str], amenities: Optional[str], furnishing: Optional[str],
+                         pet_friendly: Optional[bool]) -> dict:
+    """Build MongoDB query from filter parameters"""
+    query = {}
+    
+    if city:
+        query["address"] = {"$regex": city, "$options": "i"}
+    
+    if min_price != None or max_price != None:
+        query["price"] = {}
+        if min_price != None:
+            query["price"]["$gte"] = min_price
+        if max_price != None:
+            query["price"]["$lte"] = max_price
+    
+    if bhk:
+        query["bhk"] = bhk
+    
+    if amenities:
+        amenity_list = [a.strip() for a in amenities.split(",")]
+        query["amenities"] = {"$in": amenity_list}
+    
+    if furnishing:
+        query["furnishing"] = furnishing
+    
+    if pet_friendly != None:
+        query["pet_friendly"] = pet_friendly
+    
+    return query
+
 @api_router.get("/properties", response_model=List[Property])
 async def get_properties(
     city: Optional[str] = None,
@@ -420,26 +452,7 @@ async def get_properties(
     pet_friendly: Optional[bool] = None,
     current_user: Optional[dict] = Depends(get_current_user_optional)
 ):
-    query = {}
-    
-    if city:
-        query["address"] = {"$regex": city, "$options": "i"}
-    if min_price is not None or max_price is not None:
-        query["price"] = {}
-        if min_price is not None:
-            query["price"]["$gte"] = min_price
-        if max_price is not None:
-            query["price"]["$lte"] = max_price
-    if bhk:
-        query["bhk"] = bhk
-    if amenities:
-        amenity_list = [a.strip() for a in amenities.split(",")]
-        query["amenities"] = {"$in": amenity_list}
-    if furnishing:
-        query["furnishing"] = furnishing
-    if pet_friendly is not None:
-        query["pet_friendly"] = pet_friendly
-    
+    query = build_property_query(city, min_price, max_price, bhk, amenities, furnishing, pet_friendly)
     properties = await db.properties.find(query, {"_id": 0}).limit(100).to_list(100)
     
     if current_user:
