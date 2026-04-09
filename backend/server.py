@@ -658,7 +658,7 @@ async def get_nearby_properties(current_user: dict = Depends(get_current_user)):
 @api_router.post("/reviews", response_model=Review)
 async def create_review(review_data: ReviewCreate, current_user: dict = Depends(get_current_user)):
     # Check if property exists
-    property_obj = await db.properties.find_one({"id": review_data.property_id}, {"_id": 0})
+    property_obj = await db.properties.find_one({"id": review_data.property_id}, {"_id": 0, "id": 1})
     if not property_obj:
         raise HTTPException(status_code=404, detail="Property not found")
     
@@ -701,7 +701,7 @@ async def get_reviews(property_id: str):
 @api_router.post("/contact-owner", response_model=ContactOwner)
 async def contact_owner(contact_data: ContactOwnerCreate, current_user: dict = Depends(get_current_user)):
     # Check if property exists
-    property_obj = await db.properties.find_one({"id": contact_data.property_id}, {"_id": 0})
+    property_obj = await db.properties.find_one({"id": contact_data.property_id}, {"_id": 0, "id": 1})
     if not property_obj:
         raise HTTPException(status_code=404, detail="Property not found")
     
