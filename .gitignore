@@ -82,3 +82,7 @@ android-sdk/
 # Note: .env files are intentionally NOT ignored for Emergent deployment
 # They will be auto-updated with production values during deployment
 frontend/node_modules/.cache/default-development/1.pack
+-e 
+# Environment files
+*.env
+*.env.*
